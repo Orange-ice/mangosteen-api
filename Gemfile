@@ -37,7 +37,9 @@ gem "bootsnap", require: false
 # gem "rack-cors"
 
 # 通过 rspec 自动生成 api 文档
-gem 'rspec_api_documentation', '~> 6.1.0'
+# gem 'rspec_api_documentation', '~> 6.1.0'
+# 修复了 response body 无法展示 json 的问题
+gem 'rspec_api_documentation', git: "https://github.com/Orange-ice/rspec_api_documentation.git", branch: 'master'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

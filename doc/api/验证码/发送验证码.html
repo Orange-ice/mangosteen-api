@@ -137,8 +137,9 @@ table th, table td {
 
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
+Accept: application/json
+Content-Type: application/json
 Host: example.org
-Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
@@ -146,7 +147,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">email=123%40example.com</pre>
+            <pre class="request body">{"email":"123@example.com"}</pre>
 
 
             <h3>Response</h3>
@@ -158,15 +159,16 @@ X-Download-Options: noopen
 X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: text/plain; charset=utf-8
+Vary: Accept
 ETag: W/&quot;36a9e7f1c95b82ffb99743e0c5c4ce95&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: e5462ba4-8705-4f17-927c-e3374ab5e913
-X-Runtime: 0.052013
+X-Request-Id: 7b3e2e36-7a20-427c-bf41-bcf412b61986
+X-Runtime: 0.049862
 Content-Length: 1</pre>
             <h4>Status</h4>
             <pre class="response status">201 Created</pre>
               <h4>Body</h4>
-              <pre class="response body">[binary data]</pre>
+              <pre class="response body"> </pre>
       </div>
     </div>
   </body>
