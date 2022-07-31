@@ -1,7 +1,7 @@
 class UserMailer < ApplicationMailer
-  def welcome_email(code)
+  def welcome_email(code, email)
     @code = code
-    mail(to: '2902978956@qq.com', subject: 'Welcome to My Awesome Site')
+    mail(to: email, subject: '山竹记账系统验证码')
   end
 end
  
