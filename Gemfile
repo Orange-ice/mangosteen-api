@@ -36,14 +36,14 @@ gem "bootsnap", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem "rack-cors"
 
+# 通过 rspec 自动生成 api 文档
+gem 'rspec_api_documentation', '~> 6.1.0'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   # 用于测试的库
-  # gem 'rspec-rails', '~> 6.0.0'
-  %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
-    gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'main'
-  end
+  gem 'rspec-rails', '~> 6.0.0.rc1'
 end
 
 group :development do
