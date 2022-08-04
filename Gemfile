@@ -41,6 +41,8 @@ gem "bootsnap", require: false
 # 修复了 response body 无法展示 json 的问题
 gem 'rspec_api_documentation', git: "https://github.com/Orange-ice/rspec_api_documentation.git", branch: 'master'
 gem 'jwt'
+# 提供分页功能
+gem 'kaminari'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
