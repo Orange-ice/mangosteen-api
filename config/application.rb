@@ -13,7 +13,6 @@ require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
 # require "rails/test_unit/railtie"
-# 相对引用
 require_relative "../lib/auto_jwt"
 
 
@@ -38,6 +37,7 @@ module MangosteenApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    # jwt 中间件
     config.middleware.use AutoJwt
   end
 end
