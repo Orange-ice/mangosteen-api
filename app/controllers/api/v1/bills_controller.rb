@@ -1,9 +1,13 @@
 class Api::V1::BillsController < ApplicationController
   def index
-    bills = Bill.page(params[:page]).per(params[:per_page])
+    user_id = request.env['current_user_id']
+    return render status: :unauthorized unless user_id
+    bills = Bill.where(user_id: user_id)
+      .page(params[:page]).per(params[:per_page])
+    
     render status: :ok, json: { resources: bills, pager: {
       page: params[:page] || 1,
-      per_page: params[:per_page] || Item.default_per_page,
+      per_page: params[:per_page] || Bill.default_per_page,
       count: Bill.count
     } }
   end
