@@ -9,5 +9,12 @@ RSpec.describe "Session", type: :request do
       json = JSON.parse(response.body)
       expect(json['jwt']).to be_present
     end
+
+    it "首次登录" do
+      post api_v1_session_path, params: { email: 'burthuang@foxmail.com', code: '123456' }
+      expect(response).to have_http_status(200)
+      json = JSON.parse(response.body)
+      expect(json['jwt']).to be_present
+    end
   end
 end
