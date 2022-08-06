@@ -8,7 +8,7 @@ class Api::V1::BillsController < ApplicationController
     render status: :ok, json: { resources: bills, pager: {
       page: params[:page] || 1,
       per_page: params[:per_page] || Bill.default_per_page,
-      count: Bill.count
+      count: bills.total_count
     } }
   end
 end
