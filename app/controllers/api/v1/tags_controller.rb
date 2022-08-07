@@ -33,4 +33,13 @@ class Api::V1::TagsController < ApplicationController
       render json: { errors: tag.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+  def destroy
+    tag = Tag.find(params[:id])
+    # 不允许删除其他用户的标签
+    return render status: :not_found unless tag.user_id == request.env['current_user_id']
+    tag.deleted_at = Time.now
+    return render json: {errors: tag.errors}, status: :unprocessable_entity unless tag.save
+    render status: 200
+  end
 end

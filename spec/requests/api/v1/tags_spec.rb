@@ -128,4 +128,23 @@ RSpec.describe "Api::V1::Tags", type: :request do
       expect(json['resource']['sign']).to eq('🐿️')
     end
   end
+
+  describe "删除标签" do
+    it "鉴权，仅可删除属于自己的标签" do
+      user1 = User.create email: '1@qq.com'
+      user2 = User.create email: '2@qq.com'
+      tag = Tag.create name: 'tag1', sign: '🐿️',user_id: user1.id
+      # 鉴权
+      delete api_v1_tag_path(tag.id)
+      expect(response).to have_http_status(401)
+      # 删除属于自己的标签
+      delete api_v1_tag_path(tag.id), headers: user1.generate_auth_header
+      expect(response).to have_http_status(200)
+      tag.reload
+      expect(tag.deleted_at).not_to be_nil
+      # 删除不属于自己的标签
+      delete api_v1_tag_path(tag.id), headers: user2.generate_auth_header
+      expect(response).to have_http_status(404)
+    end
+  end
 end
