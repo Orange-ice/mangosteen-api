@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>验证码 API</title>
+    <title>标签 API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>验证码 API</h1>
+      <h1>标签 API</h1>
 
       <div class="article">
-        <h2>发送验证码</h2>
-        <h3>POST /api/v1/validate_codes</h3>
+        <h2>修改标签</h2>
+        <h3>PATCH /api/v1/tags/:id</h3>
 
           <h3>Parameters</h3>
           <table class="parameters table table-striped table-bordered table-condensed">
@@ -122,32 +122,76 @@ table th, table td {
             </thead>
             <tbody>
               <tr>
-                <td class="required">
-                    <span class="name">email</span>
+                <td>
+                    <span class="name">name</span>
                 </td>
                 <td>
-                  <span class="description">邮箱</span>
+                  <span class="description">名称</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">sign</span>
+                </td>
+                <td>
+                  <span class="description">符号</span>
                 </td>
               </tr>
             </tbody>
           </table>
 
+          <h3>Response Fields</h3>
+          <table class="response-fields table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">resource[id]</span>
+                </td>
+                <td>
+                  <span class="description">ID</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">resource[name]</span>
+                </td>
+                <td>
+                  <span class="description">名称</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">resource[sign]</span>
+                </td>
+                <td>
+                  <span class="description">符号</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxOTUsImV4cCI6MTY1OTg2ODA2MX0.xlPrGWTkRk11QsFc-n4qyZ-rPWzOaOdOJk_Ln2EIGVc
 Accept: application/json
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /api/v1/validate_codes</pre>
+          <pre class="request route highlight">PATCH /api/v1/tags/489</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">{"email":"123@example.com"}</pre>
+            <pre class="request body">{"name":"tag name new","sign":"🥰"}</pre>
 
 
             <h3>Response</h3>
@@ -158,17 +202,27 @@ X-Content-Type-Options: nosniff
 X-Download-Options: noopen
 X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
-Content-Type: text/plain; charset=utf-8
+Content-Type: application/json; charset=utf-8
 Vary: Accept
-ETag: W/&quot;36a9e7f1c95b82ffb99743e0c5c4ce95&quot;
+ETag: W/&quot;70507d6c2658c62ad6a040206418381f&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: eb7d8e36-0466-488e-ba61-c5302c4216f6
-X-Runtime: 0.010967
-Content-Length: 1</pre>
+X-Request-Id: 1d1f7e69-b757-417e-8800-7f85be294939
+X-Runtime: 0.007995
+Content-Length: 171</pre>
             <h4>Status</h4>
-            <pre class="response status">201 Created</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
-              <pre class="response body"> </pre>
+              <pre class="response body">{
+  &quot;resource&quot;: {
+    &quot;name&quot;: &quot;tag name new&quot;,
+    &quot;sign&quot;: &quot;🥰&quot;,
+    &quot;id&quot;: 489,
+    &quot;user_id&quot;: 195,
+    &quot;deleted_at&quot;: null,
+    &quot;created_at&quot;: &quot;2022-08-07T08:27:41.678Z&quot;,
+    &quot;updated_at&quot;: &quot;2022-08-07T08:27:41.686Z&quot;
+  }
+}</pre>
       </div>
     </div>
   </body>

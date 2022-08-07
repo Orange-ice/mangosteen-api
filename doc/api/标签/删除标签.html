@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>验证码 API</title>
+    <title>标签 API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,48 +106,28 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>验证码 API</h1>
+      <h1>标签 API</h1>
 
       <div class="article">
-        <h2>发送验证码</h2>
-        <h3>POST /api/v1/validate_codes</h3>
+        <h2>删除标签</h2>
+        <h3>DELETE /api/v1/tags/:id</h3>
 
-          <h3>Parameters</h3>
-          <table class="parameters table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="required">
-                    <span class="name">email</span>
-                </td>
-                <td>
-                  <span class="description">邮箱</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
 
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxOTYsImV4cCI6MTY1OTg2ODA2MX0.E9d1usCMVADAy4IWpr3ZzmhGLvJv8S8OJtAVRXKs6v8
 Accept: application/json
 Content-Type: application/json
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /api/v1/validate_codes</pre>
+          <pre class="request route highlight">DELETE /api/v1/tags/490</pre>
 
 
-            <h4>Body</h4>
-            <pre class="request body">{"email":"123@example.com"}</pre>
 
 
             <h3>Response</h3>
@@ -162,11 +142,11 @@ Content-Type: text/plain; charset=utf-8
 Vary: Accept
 ETag: W/&quot;36a9e7f1c95b82ffb99743e0c5c4ce95&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: eb7d8e36-0466-488e-ba61-c5302c4216f6
-X-Runtime: 0.010967
+X-Request-Id: 331c5f68-2a5d-43eb-a9e8-239337f30728
+X-Runtime: 0.006341
 Content-Length: 1</pre>
             <h4>Status</h4>
-            <pre class="response status">201 Created</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body"> </pre>
       </div>
