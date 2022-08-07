@@ -21,4 +21,16 @@ class Api::V1::TagsController < ApplicationController
     return render status: :not_found unless tag.user_id == request.env['current_user_id']
     render json: { resource: tag }
   end
+
+  def update
+    tag = Tag.find(params[:id])
+    # 不允许更新其他用户的标签
+    return render status: :not_found unless tag.user_id == request.env['current_user_id']
+    tag.update params.permit(:name, :sign)
+    if tag.errors.empty?
+      render json: { resource: tag }
+    else
+      render json: { errors: tag.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 end

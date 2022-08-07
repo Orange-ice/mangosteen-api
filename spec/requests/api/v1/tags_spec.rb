@@ -96,4 +96,36 @@ RSpec.describe "Api::V1::Tags", type: :request do
       expect(response).to have_http_status(404)
     end
   end
+
+  describe "更新标签" do
+    it "鉴权，仅可更新属于自己的标签" do
+      user1 = User.create email: '1@qq.com'
+      user2 = User.create email: '2@qq.com'
+      tag = Tag.create name: 'tag1', sign: '🐿️',user_id: user1.id
+      # 鉴权
+      patch api_v1_tag_path(tag.id), params: { name: 'tag2', sign: '🐿️' }
+      expect(response).to have_http_status(401)
+      # 更新属于自己的标签
+      patch api_v1_tag_path(tag.id), params: { name: 'tag2', sign: '🥰' }, headers: user1.generate_auth_header
+      expect(response).to have_http_status(200)
+      json = JSON.parse(response.body)
+      expect(json['resource']['name']).to eq('tag2')
+      expect(json['resource']['sign']).to eq('🥰')
+      expect(json['resource']['user_id']).to eq(user1.id)
+      # 更新不属于自己的标签
+      patch api_v1_tag_path(tag.id), params: { name: 'tag2', sign: '🐿️' }, headers: user2.generate_auth_header
+      expect(response).to have_http_status(404)
+    end
+
+    it "允许部分修改标签" do
+      user1 = User.create email: '1@qq.com1'
+      tag = Tag.create name: 'tag1', sign: '🐿️',user_id: user1.id
+      # 仅修改tag name
+      patch api_v1_tag_path(tag.id), params: { name: 'tag2' }, headers: user1.generate_auth_header
+      expect(response).to have_http_status(200)
+      json = JSON.parse(response.body)
+      expect(json['resource']['name']).to eq('tag2')
+      expect(json['resource']['sign']).to eq('🐿️')
+    end
+  end
 end
