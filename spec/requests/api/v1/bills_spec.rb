@@ -107,13 +107,41 @@ RSpec.describe "Api::V1::Bills", type: :request do
         end_date: '2020-02-01',
         kind: 'expense'
       }, headers: user.generate_auth_header
-      
+
       expect(response).to have_http_status(200)
       json = JSON.parse(response.body)
       expect(json['resources'].size).to eq(3)
       expect(json['resources'][0]['amount']).to eq(400)
       expect(json['resources'][1]['amount']).to eq(200)
       expect(json['resources'][2]['amount']).to eq(300)
+    end
+
+    it "按标签分组" do
+      user = User.create email: '1@qq.com'
+      tag1 = Tag.create name: '餐饮', user_id: user.id, sign: '🍲'
+      tag2 = Tag.create name: '购物', user_id: user.id, sign: '🛒'
+      tag3 = Tag.create name: '交通', user_id: user.id, sign: '🚥'
+      # 创建不同标签的账单
+      Bill.create amount: 100, user_id: user.id, tag_id: tag1.id, happened_at: '2020-01-15'
+      Bill.create amount: 200, user_id: user.id, tag_id: tag2.id, happened_at: '2020-01-15'
+      Bill.create amount: 100, user_id: user.id, tag_id: tag3.id, happened_at: '2020-01-15'
+      Bill.create amount: 900, user_id: user.id, tag_id: tag1.id, happened_at: '2020-01-10'
+      Bill.create amount: 100, user_id: user.id, tag_id: tag2.id, happened_at: '2020-01-10'
+      Bill.create amount: 500, user_id: user.id, tag_id: tag3.id, happened_at: '2020-01-10'
+
+      get '/api/v1/bills/summary', params: {
+        group_by: 'tag',
+        start_date: '2020-01-01',
+        end_date: '2020-02-01',
+        kind: 'expense'
+      }, headers: user.generate_auth_header
+
+      expect(response).to have_http_status(200)
+      json = JSON.parse(response.body)
+      expect(json['resources'].size).to eq(3)
+      expect(json['resources'][0]['amount']).to eq(1000)
+      expect(json['resources'][1]['amount']).to eq(300)
+      expect(json['resources'][2]['amount']).to eq(600)
     end
   end
 end

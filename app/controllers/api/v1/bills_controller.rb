@@ -24,9 +24,16 @@ class Api::V1::BillsController < ApplicationController
       .where(user_id: request.env['current_user_id'])
       .where(kind: params[:kind])
       .where(happened_at: params[:start_date]..params[:end_date])
-      .group(:happened_at)
-      .sum(:amount)
-    groups = bills.map { |key, value| { happened_at: key, amount: value } }
+      # .group(:happened_at)
+      # .sum(:amount)
+    
+    if params[:group_by] == 'day'
+      bills = bills.group(:happened_at).sum(:amount)
+      groups = bills.map { |key, value| { happened_at: key, amount: value } }
+    elsif params[:group_by] == 'tag'
+      bills = bills.group(:tag_id).sum(:amount)
+      groups = bills.map { |key, value| { tag_id: key, amount: value } }
+    end
     render status: :ok, json: { resources: groups, total: bills.values.sum }
   end
 end
