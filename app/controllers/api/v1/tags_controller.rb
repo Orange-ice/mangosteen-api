@@ -14,4 +14,11 @@ class Api::V1::TagsController < ApplicationController
       render json: { errors: tag.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+  def show
+    tag = Tag.find(params[:id])
+    # 不允许获取其他用户的标签
+    return render status: :not_found unless tag.user_id == request.env['current_user_id']
+    render json: { resource: tag }
+  end
 end

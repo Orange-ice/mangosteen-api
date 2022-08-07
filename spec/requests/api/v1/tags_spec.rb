@@ -75,4 +75,25 @@ RSpec.describe "Api::V1::Tags", type: :request do
     end
 
   end
+
+  describe "获取标签" do
+    it "鉴权，仅可获取属于自己的标签" do
+      user1 = User.create email: '1@qq.com'
+      user2 = User.create email: '2@qq.com'
+      tag = Tag.create name: 'tag1', sign: '🐿️',user_id: user1.id
+      # 鉴权
+      get api_v1_tag_path(tag.id)
+      expect(response).to have_http_status(401)
+      # 获取属于自己的标签
+      get api_v1_tag_path(tag.id), headers: user1.generate_auth_header
+      expect(response).to have_http_status(200)
+      json = JSON.parse(response.body)
+      expect(json['resource']['name']).to eq('tag1')
+      expect(json['resource']['sign']).to eq('🐿️')
+      expect(json['resource']['user_id']).to eq(user1.id)
+      # 获取不属于自己的标签
+      get api_v1_tag_path(tag.id), headers: user2.generate_auth_header
+      expect(response).to have_http_status(404)
+    end
+  end
 end
