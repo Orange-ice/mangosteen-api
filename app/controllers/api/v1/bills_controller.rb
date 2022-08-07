@@ -11,4 +11,11 @@ class Api::V1::BillsController < ApplicationController
       count: bills.total_count
     } }
   end
+
+  def create
+    user_id = request.env['current_user_id']
+    bill = Bill.new amount: params[:amount], tag_id: params[:tag_id], user_id: user_id, happened_at: params[:happened_at]
+    return render json: { errors: bill.errors }, status: :unprocessable_entity unless bill.save
+    render status: :created, json: { resource: bill }
+  end
 end
