@@ -18,4 +18,15 @@ class Api::V1::BillsController < ApplicationController
     return render json: { errors: bill.errors }, status: :unprocessable_entity unless bill.save
     render status: :created, json: { resource: bill }
   end
+
+  def summary
+    bills = Bill
+      .where(user_id: request.env['current_user_id'])
+      .where(kind: params[:kind])
+      .where(happened_at: params[:start_date]..params[:end_date])
+      .group(:happened_at)
+      .sum(:amount)
+    groups = bills.map { |key, value| { happened_at: key, amount: value } }
+    render status: :ok, json: { resources: groups, total: bills.values.sum }
+  end
 end

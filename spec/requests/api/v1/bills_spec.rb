@@ -88,4 +88,32 @@ RSpec.describe "Api::V1::Bills", type: :request do
       expect(json['errors']).to eq('amount' => ['can\'t be blank'], 'tag_id' => ['can\'t be blank'], 'happened_at' => ['can\'t be blank'])
     end
   end
+
+  describe "统计数据" do
+    it "按天分组" do
+      user = User.create email: '1@qq.com'
+      tag = Tag.create name: '餐饮', user_id: user.id, sign: '🍲'
+      # 创建不同时间的账单
+      Bill.create amount: 100, user_id: user.id, tag_id: tag.id, happened_at: '2020-01-15'
+      Bill.create amount: 200, user_id: user.id, tag_id: tag.id, happened_at: '2020-01-15'
+      Bill.create amount: 100, user_id: user.id, tag_id: tag.id, happened_at: '2020-01-10'
+      Bill.create amount: 300, user_id: user.id, tag_id: tag.id, happened_at: '2020-01-10'
+      Bill.create amount: 100, user_id: user.id, tag_id: tag.id, happened_at: '2020-01-12'
+      Bill.create amount: 100, user_id: user.id, tag_id: tag.id, happened_at: '2020-01-12'
+
+      get '/api/v1/bills/summary', params: {
+        group_by: 'day',
+        start_date: '2020-01-01',
+        end_date: '2020-02-01',
+        kind: 'expense'
+      }, headers: user.generate_auth_header
+      
+      expect(response).to have_http_status(200)
+      json = JSON.parse(response.body)
+      expect(json['resources'].size).to eq(3)
+      expect(json['resources'][0]['amount']).to eq(400)
+      expect(json['resources'][1]['amount']).to eq(200)
+      expect(json['resources'][2]['amount']).to eq(300)
+    end
+  end
 end
